@@ -1,0 +1,49 @@
+ clustering analysis on the Telco_customer_churn.xlsx dataset, which contains a mixture of categorical and numerical data. It uses both hierarchical clustering and k-means clustering to derive insights into customer churn and its potential factors. Here’s a breakdown of the steps:
+
+1. Data Loading and Exploration
+The dataset is loaded using pd.read_excel(), and an initial exploration is done to check the summary statistics, column types, and shape of the dataset.
+Several visualization techniques such as pair plots and box plots are used to analyze distributions and detect outliers in numerical columns (e.g., Number of Referrals, Total Revenue).
+2. Outlier Detection and Treatment
+The script identifies outliers using boxplots and applies the Interquartile Range (IQR) method to remove extreme values from the following columns:
+Number of Referrals
+Avg Monthly GB Download
+Total Extra Data Charges
+Total Refunds
+Total Long Distance Charges
+Total Revenue
+3. Data Normalization
+The script normalizes the dataset by scaling all the numerical columns between 0 and 1. Categorical variables are converted into dummy variables using pd.get_dummies().
+4. Clustering Analysis
+Hierarchical Clustering:
+The script uses scipy.cluster.hierarchy.linkage and visualizes the dendrogram to perform hierarchical clustering.
+The AgglomerativeClustering from sklearn is applied with 3 clusters based on the hierarchical clustering results.
+K-Means Clustering:
+The script uses the Elbow Method to determine the optimal number of clusters by plotting the Total Within-Cluster Sum of Squares (TWSS) for different numbers of clusters.
+It then applies K-Means clustering with the selected number of clusters.
+5. Analysis of Cluster Results
+The script assigns the cluster labels to the original dataset and calculates the mean values of the features for each cluster.
+It stores the results in two separate CSV files: one for the hierarchical clustering (Telco_customer_churn (1).xlsx) and one for the K-Means clustering (KMeans_Telco_customer_churn (1).xlsx).
+Potential Issues and Improvements:
+Handling of Missing Values:
+
+The script drops columns with missing values (Total Extra Data Charges and Total Refunds) without proper imputation. Instead of removing them, consider imputing the missing values (e.g., using mean, median, or predictive models).
+Normalization and Encoding:
+
+Ensure that the categorical features are properly encoded and that no important columns are omitted during normalization or when applying K-Means and hierarchical clustering.
+Visualizations:
+
+The pair plot (sns.pairplot()) could become cluttered if the dataset has many features. You may want to reduce the number of variables plotted or focus on specific variables.
+For clustering results, consider using additional visualizations like t-SNE or PCA to visualize high-dimensional clusters in 2D.
+Cluster Interpretations:
+
+After applying clustering, investigate the cluster profiles more deeply to derive insights into customer churn. For instance, understanding which features most influence the clusters can reveal characteristics of high-churn vs. low-churn customers.
+Saving Results:
+
+The paths used in the script ("C:\datasets\Telco_customer_churn (1).xlsx") could cause issues on different systems. Make sure to use portable paths, or parameterize them if running the script on different machines.
+Let me know if you need further help with any specific part of this analysis or additional insights!
+
+
+
+
+
+

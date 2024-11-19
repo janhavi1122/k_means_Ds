@@ -1,0 +1,33 @@
+This Python script performs clustering on an auto insurance dataset (AutoInsurance.csv) using both hierarchical clustering (AgglomerativeClustering) and K-means clustering. Here's an overview of the steps involved:
+
+1. Data Loading and Exploration:
+The dataset is loaded using pd.read_csv().
+Column names and data types are explored to understand which columns need conversion or preprocessing.
+Some columns with non-numeric data (like State, Education, etc.) are converted into numeric values using dummy encoding (pd.get_dummies()).
+2. Data Preprocessing:
+Outliers are identified and treated using the Interquartile Range (IQR) method for columns such as Customer Lifetime Value, Monthly Premium Auto, Number of Open Complaints, Number of Policies, and Total Claim Amount.
+Unnecessary columns (State, Education, Customer, Marital Status, and Sales Channel) are dropped.
+The data is normalized to scale the numeric values between 0 and 1 using the norm_func() function.
+3. Hierarchical Clustering:
+Hierarchical clustering is applied using scipy.cluster.hierarchy.linkage() and the dendrogram is plotted to visualize the clusters.
+AgglomerativeClustering from sklearn is used with the 'complete' linkage method and 'euclidean' affinity to assign cluster labels to each customer.
+A summary of the clustering by taking the mean of variables within each cluster is provided.
+4. K-means Clustering:
+An Elbow Method is used to determine the optimal number of clusters by plotting the total within-cluster sum of squares (TWSS) for various cluster numbers.
+The difference between consecutive TWSS values is computed to find the "elbow", which indicates the ideal number of clusters.
+K-means clustering is then applied with the selected number of clusters, and labels are assigned to the data.
+The clusters are analyzed by calculating the mean of the numerical columns within each cluster.
+5. Cluster Analysis:
+The final dataframe with cluster labels is saved to a new CSV file, and basic statistics of the clusters are analyzed by calculating the mean of different features within each cluster.
+Key Python Libraries:
+pandas for data manipulation and loading.
+matplotlib, seaborn for plotting and visualizing data distributions.
+scipy.cluster.hierarchy for hierarchical clustering.
+sklearn.cluster for applying AgglomerativeClustering and KMeans.
+Output:
+The output includes:
+Box plots for outlier detection.
+The hierarchical clustering dendrogram.
+The cluster labels assigned to the dataset.
+A CSV file with the final data and cluster labels.
+This process helps segment customers based on similar characteristics, which can be useful for targeted marketing, personalized services, or further analysis.

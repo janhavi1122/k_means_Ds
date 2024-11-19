@@ -1,0 +1,82 @@
+It looks like you're working on an airline customer clustering project using K-Means and Agglomerative Clustering. Below is a summary of your process, along with the continuation for finding the optimal number of clusters for the K-Means algorithm:
+
+Summary of Your Process:
+Data Import and Exploration:
+
+You imported the dataset EastWestAirlines.xlsx and explored its structure using pandas.
+The dataset contains columns like Balance, Qual_miles, Flight_miles_12mo, etc., with integer values.
+Data Preprocessing:
+
+You identified the need to handle outliers and performed IQR-based capping for several columns (Balance, Qual_miles, cc1_miles, etc.).
+The data was normalized using Min-Max scaling to ensure uniformity for clustering.
+You used boxplots to visualize the outliers and handled them for multiple columns.
+Exploratory Data Analysis (EDA):
+
+Pairplots and PDFs were used to visualize relationships between features.
+You observed that approximately 90% of the Balance data lies under 20,000, helping inform decisions for further processing.
+Hierarchical Clustering:
+
+After normalization, you created a hierarchical clustering dendrogram using SciPy's linkage function and visualized the result.
+Then, you applied Agglomerative Clustering with 3 clusters and assigned cluster labels to the data.
+K-Means Clustering:
+
+You began using the K-Means algorithm to find the ideal number of clusters using the elbow method. This involved calculating the total within-cluster sum of squares (TWSS) for cluster counts ranging from 2 to 7.
+The TWSS values showed a decreasing trend, indicating the presence of distinct clusters.
+Continuation of Your K-Means Clustering Process:
+Now, let's continue from where you left off, completing the process of finding the optimal number of clusters using the elbow method and running K-Means clustering:
+
+python
+Copy code
+# Function to find the optimal number of clusters (elbow method)
+def find_cluster_number(TWSS):
+    diff = []
+    for i in range(0, len(TWSS)-1):
+        d = TWSS[i] - TWSS[i+1]
+        diff.append(d)
+    return diff.index(max(diff)) + 2  # +2 because we started from k=2
+
+# Find the optimal number of clusters using the elbow method
+optimal_clusters = find_cluster_number(TWSS)
+print(f"Optimal number of clusters: {optimal_clusters}")
+
+# Fit the KMeans model with the optimal number of clusters
+kmeans = KMeans(n_clusters=optimal_clusters, random_state=42)
+kmeans.fit(df_normal)
+
+# Assign the cluster labels to the dataframe
+airlines['kmeans_cluster'] = kmeans.labels_
+
+# View the cluster centers and the mean of features per cluster
+cluster_centers = pd.DataFrame(kmeans.cluster_centers_, columns=df_normal.columns)
+print("Cluster Centers:")
+print(cluster_centers)
+
+# View the summary statistics for each cluster
+cluster_summary = airlines.groupby('kmeans_cluster').mean()
+print("Cluster Summary Statistics:")
+print(cluster_summary)
+
+# Save the dataframe with the new cluster labels to a CSV file
+airlines.to_csv("E:/datasets/EastWestAirlines_with_clusters.csv", encoding='utf-8')
+
+# Check the distribution of clusters
+cluster_counts = airlines['kmeans_cluster'].value_counts()
+print("Cluster Distribution:")
+print(cluster_counts)
+Explanation of the Code:
+find_cluster_number function: This function calculates the difference between consecutive TWSS values and selects the point where the difference is maximized, which corresponds to the optimal number of clusters.
+Fitting K-Means: After determining the optimal number of clusters (let's assume the elbow method suggests k = 3), the K-Means algorithm is applied to the normalized data.
+Cluster Centers and Summary: We then extract the cluster centers and summarize the means of features per cluster, helping to interpret the characteristics of each group.
+Saving the Results: The modified dataset, including cluster labels, is saved to a new CSV file.
+Next Steps:
+Interpret the Clusters: After clustering, you should analyze the mean values of features for each cluster to understand what distinguishes each group (e.g., customer behavior, spending patterns, frequent flyer activity).
+Use the Clusters for Business Objectives: Based on these insights, you can propose targeted marketing strategies or mileage offers for different customer segments.
+
+
+
+
+
+
+
+
+
